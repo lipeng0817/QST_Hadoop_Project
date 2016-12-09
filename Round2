@@ -1,1 +1,37 @@
+# Round 2 介绍
+方案介绍：
+        UV统计：
+             利用正则表达式将数据拆分，每一行保留用户的ip地址、访问时间、存放到set集合中进行去重
+             map中 key值为时间 value为ip进行输出
+             reduce 中处理去重的ip
+        PV统计：
+	     利用正则表达式将数据拆分，每一行保留用户的ip地址，以及访问路径 一个ip对应一个用户
+	     map中 key值为ip value为访问路径进行输出
+	     reduce 中处理key的ip进行统计计数 即为PV
+        次日留存、次月留存统计：
+             通过MapReduce得到前一天/前一个月访问的不同ip
+             在通过MapReduce得到当天/当前月访问的不同ip
+             通过以上得到的数据做一个MapReduce 统计每个ip出现的次数 
+             ip次数不为1就是留下的用户
+	网页跳转率：
+	     利用正则表达式将数据进行拆分，每一行保留用户的ip地址，访问路径
+	     map中key值为ip value为访问路径
+	     reduce中统计总的页面uv总数为sum 统计ip访问页面超过1的uv数为count 输出count/sum
+	统计每天从baidu跳转过来的pv：
+	     利用正则表达式对日志进行分割，得到跳转的地址
+	     map中的key值为跳转为百度 value定义为1
+	     reduce中对value进行累加 统计最终得到的就是pv
+	统计每天iOS和Android的uv数：
+	     map中通过正则表达式匹配通过ios和Android的访问记录 key为访问记录 value为ip
+	     reduce中把value值进行统计 即为uv数
+	
+	
+	实时查询：
+		当前show的访问数量：把数据show切割放到hbase中存储，从Hbase中查询存储的数量 
+		查询当前的musician的访问数量：把数据musician切割放到hbase中存储，从Hbase中查询存储的数量 
 
+
+	项目拆解：
+		12月9号完成方案设计和时间规划。
+		12月10-12月12 完成uv、pv、留存
+		12月13-12月15 完成跳转、百度跳转的pv ios和Android的uv 实时查询		  
